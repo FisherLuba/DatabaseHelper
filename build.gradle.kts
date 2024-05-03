@@ -39,17 +39,21 @@ kotlin {
 }
 
 tasks {
-
     compileJava {
         options.encoding = Charsets.UTF_8.name()
         options.release.set(21)
     }
-
+    compileKotlin {
+        kotlinOptions.jvmTarget = "21"
+    }
 }
 
 publishing {
     publications {
         create<MavenPublication>("maven") {
+            groupId = "com.fisherl"
+            artifactId = "databasehelper"
+            version = "0.0.1"
             from(components["java"])
         }
     }
