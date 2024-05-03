@@ -1,4 +1,4 @@
-package com.fisherl.databasehelper.field
+package com.fisherl.databasehelper.column
 
 import com.fisherl.databasehelper.Collation
 
@@ -38,9 +38,7 @@ class Column<T> private constructor(
 
         NOT_NULL,
         UNIQUE,
-        PRIMARY_KEY,
-        FOREIGN_KEY,
-        CHECK
+        PRIMARY_KEY
 
     }
 
@@ -54,7 +52,6 @@ class Column<T> private constructor(
                         return "'$value'"
                     }
                 }
-
             }
 
         }

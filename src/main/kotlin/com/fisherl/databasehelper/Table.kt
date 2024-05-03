@@ -1,6 +1,6 @@
 package com.fisherl.databasehelper
 
-import com.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.column.Column
 
 class Table<T>(
     val name: String,

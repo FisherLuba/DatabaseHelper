@@ -1,6 +1,6 @@
 package com.fisherl.databasehelper.query
 
-import com.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.column.Column
 
 enum class LogicalOperator {
     AND,
@@ -25,6 +25,8 @@ class ClauseInput<T> private constructor(
 ) {
 
     companion object {
+
+        const val UNDETERMINED = "?"
 
         fun <T> column(column: Column<T>): ClauseInput<T> {
             return ClauseInput(column, column.name)

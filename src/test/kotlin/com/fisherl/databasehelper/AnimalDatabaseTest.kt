@@ -1,7 +1,7 @@
 package com.fisherl.databasehelper
 
 import com.fisherl.databasehelper.dialect.PostgresDialect
-import com.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.column.Column
 import com.fisherl.databasehelper.query.ClauseInput
 import com.fisherl.databasehelper.query.DeleteStatement
 import com.fisherl.databasehelper.query.InsertStatement
@@ -14,6 +14,7 @@ import com.fisherl.databasehelper.query.UpdateStatement
 import com.fisherl.databasehelper.query.WhereClause
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
+import java.util.UUID
 
 const val ANIMAL_TABLE_NAME = "animals"
 const val MAMMALS_TABLE_NAME = "mammals"
@@ -38,6 +39,7 @@ private val ANIMAL_ID_COL = Column.Type.INT.createColumn(
         Column.Constraint.PRIMARY_KEY
     )
 )
+
 private val ANIMAL_NAME_COL = Column.Type.varchar(255).createColumn(
     ANIMAL_TABLE_NAME,
     "name",
@@ -129,8 +131,7 @@ val SELECT_ALL_ANIMALS_JOINED_WITH_MAMMALS = SelectStatement.Builder(
             TableJoin.Type.INNER_JOIN,
             JoinColumns.Builder().add(
                 JoinColumn(ANIMAL_TABLE, ANIMAL_ID_COL),
-                JoinColumn(MAMMALS_TABLE, MAMMAL_ID_COL),
-                TableJoin.Type.INNER_JOIN
+                JoinColumn(MAMMALS_TABLE, MAMMAL_ID_COL)
             ).build()
         )
     ),
@@ -142,8 +143,7 @@ val SELECT_ALL_ANIMALS_JOINED_WITH_MAMMALS = SelectStatement.Builder(
 
 val INSERT_ONE_ANIMAL = InsertStatement(
     ANIMAL_TABLE,
-    listOf(ANIMAL_ID_COL, ANIMAL_NAME_COL, ANIMAL_DESCRIPTION_COL),
-    emptyList()
+    listOf(ANIMAL_ID_COL, ANIMAL_NAME_COL, ANIMAL_DESCRIPTION_COL)
 )
 
 val INSERT_ONE_ANIMAL_AND_SELECT_ALL = InsertStatement(

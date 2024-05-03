@@ -1,7 +1,7 @@
 package com.fisherl.databasehelper.query
 
 import com.fisherl.databasehelper.Table
-import com.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.column.Column
 
 sealed class Statement<T>(
     val table: Table<T>,
@@ -9,16 +9,16 @@ sealed class Statement<T>(
     val joins: List<TableJoin>
 )
 
-class SelectStatement<T>(
+class SelectStatement<T> private constructor(
     table: Table<T>,
     columns: List<Column<*>>,
-    joins: List<TableJoin>,
-    val where: WhereClause?,
-    val groupBy: List<Column<*>>,
+    joins: List<TableJoin> = emptyList(),
+    val where: WhereClause? = null,
+    val groupBy: List<Column<*>> = emptyList(),
     val having: HavingClause? = null, // todo
-    val orderBy: OrderByClause?,
-    val limit: Int?,
-    val offset: Int?
+    val orderBy: OrderByClause? = null,
+    val limit: Int? = null,
+    val offset: Int? = null
 ) : Statement<T>(
     table,
     columns,
@@ -28,11 +28,11 @@ class SelectStatement<T>(
     class Builder<T>(
         private var table: Table<T>,
         private var columns: List<Column<*>>,
-        private var joins: List<TableJoin>,
-        private var where: WhereClause?,
-        private var orderBy: OrderByClause?,
-        private var limit: Int?,
-        private var offset: Int?
+        private var joins: List<TableJoin> = listOf(),
+        private var where: WhereClause? = null,
+        private var orderBy: OrderByClause? = null,
+        private var limit: Int? = null,
+        private var offset: Int? = null
     ) {
         private var groupBy: List<Column<*>> = emptyList()
         private var having: HavingClause? = null
@@ -62,7 +62,7 @@ class SelectStatement<T>(
 class InsertStatement<T>(
     table: Table<T>,
     columns: List<Column<*>>,
-    joins: List<TableJoin>,
+    joins: List<TableJoin> = emptyList(),
     val selectStatement: SelectStatement<T>? = null
 ) : Statement<T>(
     table,
@@ -72,8 +72,8 @@ class InsertStatement<T>(
 
 class DeleteStatement<T>(
     table: Table<T>,
-    joins: List<TableJoin>,
-    val where: WhereClause?
+    joins: List<TableJoin> = emptyList(),
+    val where: WhereClause? = null
 ) : Statement<T>(
     table,
     emptyList(),
