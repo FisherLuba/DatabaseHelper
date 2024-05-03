@@ -21,11 +21,20 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
 tasks.withType<Test> {
     this.testLogging {
         this.showStandardStreams = true
         this.showCauses = true
         this.events = setOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
     }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+kotlin {
+    jvmToolchain(21)
 }
