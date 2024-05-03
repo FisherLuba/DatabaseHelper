@@ -1,4 +1,4 @@
-package com.fisherl.databasehelper
+package com.fisherl.databasehelper.column
 
 // TODO
 class Collation(val id: String) {

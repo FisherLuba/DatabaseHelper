@@ -2,6 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     kotlin("jvm") version "1.9.23"
+    `maven-publish`
 }
 
 group = "com.fisherl"

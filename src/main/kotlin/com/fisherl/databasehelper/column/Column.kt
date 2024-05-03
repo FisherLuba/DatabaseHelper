@@ -1,7 +1,5 @@
 package com.fisherl.databasehelper.column
 
-import com.fisherl.databasehelper.Collation
-
 class Column<T> private constructor(
     val type: Type<T>,
     private val tableName: String,
