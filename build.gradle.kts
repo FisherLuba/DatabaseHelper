@@ -31,13 +31,20 @@ tasks.withType<Test> {
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+tasks {
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(21)
+    }
+
 }
 
 publishing {
