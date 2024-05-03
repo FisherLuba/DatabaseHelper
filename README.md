@@ -6,8 +6,7 @@ prevent some mistakes in formatting statements.
 
 There is more info on the [wiki](https://github.com/FisherLuba/DatabaseHelper/wiki)
 
-[![Release](https://jitpack.io/v/User/Repo.svg)]
-(https://jitpack.io/#User/Repo)
+[![Release](https://jitpack.io/v/User/Repo.svg)](https://jitpack.io/#User/Repo)
 
 # TODO
 - Setup testing to connect to actual database
