@@ -1,6 +1,6 @@
-package io.github.fisherl.databasehelper.field
+package com.fisherl.databasehelper.field
 
-import io.github.fisherl.databasehelper.Collation
+import com.fisherl.databasehelper.Collation
 
 class Column<T> private constructor(
     val type: Type<T>,

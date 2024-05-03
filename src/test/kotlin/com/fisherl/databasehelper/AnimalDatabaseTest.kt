@@ -1,20 +1,34 @@
-package io.github.fisherl.databasehelper
+package com.fisherl.databasehelper
 
-import io.github.fisherl.databasehelper.dialect.PostgresDialect
-import io.github.fisherl.databasehelper.field.Column
-import io.github.fisherl.databasehelper.query.ClauseInput
-import io.github.fisherl.databasehelper.query.InsertStatement
-import io.github.fisherl.databasehelper.query.JoinColumn
-import io.github.fisherl.databasehelper.query.JoinColumns
-import io.github.fisherl.databasehelper.query.OrderByClause
-import io.github.fisherl.databasehelper.query.SelectStatement
-import io.github.fisherl.databasehelper.query.TableJoin
-import io.github.fisherl.databasehelper.query.WhereClause
+import com.fisherl.databasehelper.dialect.PostgresDialect
+import com.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.query.ClauseInput
+import com.fisherl.databasehelper.query.DeleteStatement
+import com.fisherl.databasehelper.query.InsertStatement
+import com.fisherl.databasehelper.query.JoinColumn
+import com.fisherl.databasehelper.query.JoinColumns
+import com.fisherl.databasehelper.query.OrderByClause
+import com.fisherl.databasehelper.query.SelectStatement
+import com.fisherl.databasehelper.query.TableJoin
+import com.fisherl.databasehelper.query.UpdateStatement
+import com.fisherl.databasehelper.query.WhereClause
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 const val ANIMAL_TABLE_NAME = "animals"
 const val MAMMALS_TABLE_NAME = "mammals"
+
+sealed class Animal(
+    val id: Int,
+    val name: String,
+    val description: String
+)
+
+class Mammal(
+    id: Int,
+    name: String,
+    description: String
+) : Animal(id, name, description)
 
 private val ANIMAL_ID_COL = Column.Type.INT.createColumn(
     ANIMAL_TABLE_NAME,
@@ -35,7 +49,7 @@ private val ANIMAL_DESCRIPTION_COL = Column.Type.TEXT.createColumn(
     constraints = arrayOf(Column.Constraint.NOT_NULL)
 )
 
-val ANIMAL_TABLE = Table(
+val ANIMAL_TABLE = Table<Animal>(
     ANIMAL_TABLE_NAME,
     listOf(ANIMAL_ID_COL, ANIMAL_NAME_COL, ANIMAL_DESCRIPTION_COL),
     temporary = false,
@@ -64,7 +78,7 @@ private val MAMMAL_DESCRIPTION_COL = Column.Type.TEXT.createColumn(
     constraints = arrayOf(Column.Constraint.NOT_NULL)
 )
 
-val MAMMALS_TABLE = Table(
+val MAMMALS_TABLE = Table<Mammal>(
     MAMMALS_TABLE_NAME,
     listOf(MAMMAL_ID_COL, MAMMAL_NAME_COL, MAMMAL_DESCRIPTION_COL),
     temporary = false,
@@ -139,6 +153,19 @@ val INSERT_ONE_ANIMAL_AND_SELECT_ALL = InsertStatement(
     SELECT_ALL_ANIMALS
 )
 
+val DELETE_ANIMALS_WHERE_ID_EQ_1 = DeleteStatement(
+    ANIMAL_TABLE,
+    emptyList(),
+    WhereClause.builder().equal(ClauseInput.column(ANIMAL_ID_COL), 1),
+)
+
+val UPDATE_ANIMALS_WHERE_ID_EQ_1 = UpdateStatement(
+    ANIMAL_TABLE,
+    listOf(ANIMAL_NAME_COL, ANIMAL_DESCRIPTION_COL),
+    emptyList(),
+    WhereClause.builder().equal(ClauseInput.column(ANIMAL_ID_COL), 1),
+)
+
 class AnimalDatabaseTest {
 
     @Test
@@ -196,6 +223,24 @@ class AnimalDatabaseTest {
         val statement = PostgresDialect.createInsertStatement(INSERT_ONE_ANIMAL_AND_SELECT_ALL)
         assertEquals(
             "INSERT INTO animals (animals.id, animals.name, animals.description) VALUES (?, ?, ?) SELECT animals.id, animals.name, animals.description FROM animals;",
+            statement
+        )
+    }
+
+    @Test
+    fun testDeleteStatement() {
+        val statement = PostgresDialect.createDeleteStatement(DELETE_ANIMALS_WHERE_ID_EQ_1)
+        assertEquals(
+            "DELETE FROM animals WHERE animals.id = 1;",
+            statement
+        )
+    }
+
+    @Test
+    fun testUpdateStatement() {
+        val statement = PostgresDialect.createUpdateStatement(UPDATE_ANIMALS_WHERE_ID_EQ_1)
+        assertEquals(
+            "UPDATE animals SET animals.name = ?, animals.description = ? WHERE animals.id = 1;",
             statement
         )
     }

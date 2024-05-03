@@ -1,16 +1,16 @@
-package io.github.fisherl.databasehelper.query
+package com.fisherl.databasehelper.query
 
-import io.github.fisherl.databasehelper.Table
-import io.github.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.Table
+import com.fisherl.databasehelper.field.Column
 
-sealed class Statement constructor(
-    val table: Table,
+sealed class Statement<T>(
+    val table: Table<T>,
     val columns: List<Column<*>>,
     val joins: List<TableJoin>
 )
 
-class SelectStatement(
-    table: Table,
+class SelectStatement<T>(
+    table: Table<T>,
     columns: List<Column<*>>,
     joins: List<TableJoin>,
     val where: WhereClause?,
@@ -19,14 +19,14 @@ class SelectStatement(
     val orderBy: OrderByClause?,
     val limit: Int?,
     val offset: Int?
-) : Statement(
+) : Statement<T>(
     table,
     columns,
     joins
 ) {
 
-    class Builder(
-        private var table: Table,
+    class Builder<T>(
+        private var table: Table<T>,
         private var columns: List<Column<*>>,
         private var joins: List<TableJoin>,
         private var where: WhereClause?,
@@ -37,11 +37,11 @@ class SelectStatement(
         private var groupBy: List<Column<*>> = emptyList()
         private var having: HavingClause? = null
 
-        fun groupBy(groupBy: List<Column<*>>, having: HavingClause? = null): Builder {
+        fun groupBy(groupBy: List<Column<*>>, having: HavingClause? = null): Builder<T> {
             return this
         }
 
-        fun build(): SelectStatement {
+        fun build(): SelectStatement<T> {
             return SelectStatement(
                 table,
                 columns,
@@ -59,12 +59,33 @@ class SelectStatement(
 
 }
 
-class InsertStatement(
-    table: Table,
+class InsertStatement<T>(
+    table: Table<T>,
     columns: List<Column<*>>,
     joins: List<TableJoin>,
-    val selectStatement: SelectStatement? = null
-) : Statement(
+    val selectStatement: SelectStatement<T>? = null
+) : Statement<T>(
+    table,
+    columns,
+    joins
+)
+
+class DeleteStatement<T>(
+    table: Table<T>,
+    joins: List<TableJoin>,
+    val where: WhereClause?
+) : Statement<T>(
+    table,
+    emptyList(),
+    joins
+)
+
+class UpdateStatement<T>(
+    table: Table<T>,
+    columns: List<Column<*>>,
+    joins: List<TableJoin>,
+    val where: WhereClause?
+) : Statement<T>(
     table,
     columns,
     joins

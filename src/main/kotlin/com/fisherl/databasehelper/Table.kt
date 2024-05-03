@@ -1,8 +1,8 @@
-package io.github.fisherl.databasehelper
+package com.fisherl.databasehelper
 
-import io.github.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.field.Column
 
-class Table(
+class Table<T>(
     val name: String,
     val columns: List<Column<*>>,
     val temporary: Boolean = false,

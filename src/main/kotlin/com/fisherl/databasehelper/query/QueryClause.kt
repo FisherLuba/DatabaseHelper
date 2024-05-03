@@ -1,6 +1,6 @@
-package io.github.fisherl.databasehelper.query
+package com.fisherl.databasehelper.query
 
-import io.github.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.field.Column
 
 enum class LogicalOperator {
     AND,

@@ -1,4 +1,4 @@
-package io.github.fisherl.databasehelper
+package com.fisherl.databasehelper
 
 enum class KeyType() {
 

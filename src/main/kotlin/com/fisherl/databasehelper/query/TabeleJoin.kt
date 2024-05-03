@@ -1,9 +1,9 @@
-package io.github.fisherl.databasehelper.query
+package com.fisherl.databasehelper.query
 
-import io.github.fisherl.databasehelper.Table
-import io.github.fisherl.databasehelper.field.Column
+import com.fisherl.databasehelper.Table
+import com.fisherl.databasehelper.field.Column
 
-data class JoinColumn(val table: Table, val column: Column<*>)
+data class JoinColumn(val table: Table<*>, val column: Column<*>)
 
 class JoinColumns private constructor(
     val leftColumns: List<JoinColumn>,
@@ -31,7 +31,7 @@ class JoinColumns private constructor(
 }
 
 class TableJoin(
-    val from: Table,
+    val from: Table<*>,
     val type: Type,
     val joinColumns: JoinColumns
 ) {
